@@ -8,16 +8,8 @@ on:
 
 jobs:
   build:
-    name: Build (${{ matrix.arch }})
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runner: macos-15
-            arch: arm64
-          - runner: macos-13
-            arch: x64
+    name: Build (arm64)
+    runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
 
@@ -25,12 +17,12 @@ jobs:
         run: make app
 
       - name: Package
-        run: ditto -c -k --sequesterRsrc --keepParent SonyConnect.app "SonyConnect-macos-${{ matrix.arch }}.zip"
+        run: ditto -c -k --sequesterRsrc --keepParent SonyConnect.app "SonyConnect-macos-arm64.zip"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: SonyConnect-macos-${{ matrix.arch }}
-          path: SonyConnect-macos-${{ matrix.arch }}.zip
+          name: SonyConnect-macos-arm64
+          path: SonyConnect-macos-arm64.zip
 
   release:
     name: Create Release
